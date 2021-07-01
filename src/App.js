@@ -1,17 +1,15 @@
-import Radio from './Radio.js'
+import Radio from './Radio.js';
+import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          RADIO-SEARCH
-        </p>
+    <div className='App'>
+      <header className='App-header'>
+        <h1>RADIO-SEARCH</h1>
       </header>
-      <input></input>
-      <Radio/>
+
+      <Radio />
     </div>
   );
 }
- export default App; 
- 
+export default App;

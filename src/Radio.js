@@ -1,44 +1,94 @@
-import React, { useEffect, useState } from "react"
-import { RadioBrowserApi } from "radio-browser-api"
-import AudioPlayer from "react-h5-audio-player"
-import "react-h5-audio-player/lib/styles.css"
-
-
-const api = new RadioBrowserApi('Radio-Search')
+import React, { useEffect, useState } from 'react';
+import { RadioBrowserApi } from 'radio-browser-api';
+import AudioPlayer from 'react-h5-audio-player';
+import 'react-h5-audio-player/lib/styles.css';
 
 export default function Radio() {
-  const [station, setStation] = useState()
+  const [stations, setStations] = useState();
+  const [stationFilter, setStationFilter] = useState('all');
 
-  useEffect(()=> {
-     callStation()
+  useEffect(() => {
+    setupApi(stationFilter).then((data) => {
+      console.log(data);
+      setStations(data);
+    });
+  }, [stationFilter]);
+
+  const setupApi = async (stationFilter) => {
+    const api = new RadioBrowserApi(fetch.bind(window), 'My Radio App');
+
+    const stations = await api
+      .searchStations({
+        language: 'english',
+        tag: stationFilter,
+        limit: 30,
       })
+      .then((data) => {
+        return data;
+      });
 
-  const callStation = async () => {
-     const station = await api.searchStations({
-         language: 'english',
-         tag: 'jazz',
-         limit: 1, 
-     }).then(data => {
-        setStation(data)
-      })
+    return stations;
+  };
 
-     return station
-  }
-  
-  console.log(station)
+  const filters = [
+    'all',
+    'classical',
+    'country',
+    'dance',
+    'disco',
+    'house',
+    'jazz',
+    'pop',
+    'rap',
+    'retro',
+    'rock',
+  ];
+
+  // const setDefaultSrc = (event) => {
+  //   event.target.src = defaultImage;
+  // };
+
   return (
-    <div className="radio">
-    <h1>RADIO STATIONS</h1>
-   <button>SEARCH</button>
-     <AudioPlayer
-  src = "https://rautemusik-de-hz-fal-stream15.radiohost.de/solopiano?ref=radiobrowser&listenerid=31363234383933303031-323030313a313966303a353030313a333261343a353430303a3266663a666533373a37356332-3431323232-53747265616d436865636b426f742f302e312e30"
-  className="player"
-  showJumpControls={false}
-  layout="stacked"
-  customProgressBarSection={[]}
-  customControlsSection={["MAIN_CONTROLS", "VOLUME_CONTROLS"]}
-  autoPlayAfterSrcChange={false}
-/>
+    <div className='radio'>
+      <div className='filters'>
+        {filters.map((filter, index) => (
+          <span
+            key={index}
+            className={stationFilter === filter ? 'selected' : ''}
+            onClick={() => setStationFilter(filter)}
+          >
+            {filter}
+          </span>
+        ))}
+      </div>
+      <div className='stations'>
+        {stations &&
+          stations.map((station, index) => {
+            return (
+              <div className='station' key={index}>
+                <div className='stationName'>
+                  {/* <img
+                    className='logo'
+                    src={station.favicon}
+                    alt='station logo'
+                    onError={setDefaultSrc}
+                  /> */}
+                  <div className='name'>{station.name}</div>
+                </div>
+
+                <AudioPlayer
+                  className='player'
+                  src={station.urlResolved}
+                  showJumpControls={false}
+                  layout='stacked'
+                  customProgressBarSection={[]}
+                  customControlsSection={['MAIN_CONTROLS', 'VOLUME_CONTROLS']}
+                  autoPlayAfterSrcChange={false}
+                />
+              </div>
+            );
+          })}
+      </div>
     </div>
-  )
+  );
 }
