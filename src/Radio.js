@@ -4,8 +4,7 @@ import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
 import './Radio.css';
 import Button from '@material-ui/core/Button';
-
-
+import defaultImage from './7a7E.gif';
 
 export default function Radio() {
   const [stations, setStations] = useState();
@@ -48,22 +47,22 @@ export default function Radio() {
     'rock',
   ];
 
-  // const setDefaultSrc = (event) => {
-  //   event.target.src = defaultImage;
-  // };
+  const setDefaultSrc = (event) => {
+    event.target.src = defaultImage;
+  };
 
   return (
     <div className='radio'>
       <div className='filters'>
         {filters.map((filter, index) => (
-          <Button variant="contained" color='primary'>
-          <span
-            key={index}
-            className={stationFilter === filter ? 'selected' : ''}
-            onClick={() => setStationFilter(filter)}
-          >
-            {filter}
-          </span>
+          <Button variant='contained' color='primary'>
+            <span
+              key={index}
+              className={stationFilter === filter ? 'selected' : ''}
+              onClick={() => setStationFilter(filter)}
+            >
+              {filter}
+            </span>
           </Button>
         ))}
       </div>
@@ -73,12 +72,12 @@ export default function Radio() {
             return (
               <div className='station' key={index}>
                 <div className='stationName'>
-                  {/* <img
+                  <img
                     className='logo'
                     src={station.favicon}
                     alt='station logo'
                     onError={setDefaultSrc}
-                  /> */}
+                  />
                   <div className='name'>{station.name}</div>
                 </div>
                 <AudioPlayer
@@ -90,9 +89,7 @@ export default function Radio() {
                   customControlsSection={['MAIN_CONTROLS', 'VOLUME_CONTROLS']}
                   autoPlayAfterSrcChange={false}
                 />
-               
-                </div>
-              
+              </div>
             );
           })}
       </div>
