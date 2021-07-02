@@ -2,6 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { RadioBrowserApi } from 'radio-browser-api';
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
+import './Radio.css';
+import Button from '@material-ui/core/Button';
+
+
 
 export default function Radio() {
   const [stations, setStations] = useState();
@@ -52,6 +56,7 @@ export default function Radio() {
     <div className='radio'>
       <div className='filters'>
         {filters.map((filter, index) => (
+          <Button variant="contained" color='primary'>
           <span
             key={index}
             className={stationFilter === filter ? 'selected' : ''}
@@ -59,6 +64,7 @@ export default function Radio() {
           >
             {filter}
           </span>
+          </Button>
         ))}
       </div>
       <div className='stations'>
@@ -75,7 +81,6 @@ export default function Radio() {
                   /> */}
                   <div className='name'>{station.name}</div>
                 </div>
-
                 <AudioPlayer
                   className='player'
                   src={station.urlResolved}
@@ -85,7 +90,9 @@ export default function Radio() {
                   customControlsSection={['MAIN_CONTROLS', 'VOLUME_CONTROLS']}
                   autoPlayAfterSrcChange={false}
                 />
-              </div>
+               
+                </div>
+              
             );
           })}
       </div>
