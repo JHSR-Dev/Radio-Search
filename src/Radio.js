@@ -5,6 +5,10 @@ import 'react-h5-audio-player/lib/styles.css';
 import './Radio.css';
 import Button from '@material-ui/core/Button';
 import defaultImage from './7a7E.gif';
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardMedia from '@material-ui/core/CardMedia';
+import CardContent from '@material-ui/core/CardContent';
 
 export default function Radio() {
   const [stations, setStations] = useState();
@@ -12,7 +16,6 @@ export default function Radio() {
 
   useEffect(() => {
     setupApi(stationFilter).then((data) => {
-      console.log(data);
       setStations(data);
     });
   }, [stationFilter]);
@@ -24,7 +27,7 @@ export default function Radio() {
       .searchStations({
         language: 'english',
         tag: stationFilter,
-        limit: 30,
+        limit: 50,
       })
       .then((data) => {
         return data;
@@ -70,17 +73,11 @@ export default function Radio() {
         {stations &&
           stations.map((station, index) => {
             return (
-              <div className='station' key={index}>
-                <div className='stationName'>
-                  <img
-                    className='logo'
-                    src={station.favicon}
-                    alt='station logo'
-                    onError={setDefaultSrc}
-                  />
-                  <div className='name'>{station.name}</div>
-                </div>
-                <AudioPlayer
+              <Card className='station' key={index}>
+                <CardHeader className='stationName' title={station.name}/>
+                <CardMedia className ='logo' image = {station.favicon ? station.favicon : defaultImage} title='station logo'/>
+                <CardContent>
+                 <AudioPlayer
                   className='player'
                   src={station.urlResolved}
                   showJumpControls={false}
@@ -89,7 +86,8 @@ export default function Radio() {
                   customControlsSection={['MAIN_CONTROLS', 'VOLUME_CONTROLS']}
                   autoPlayAfterSrcChange={false}
                 />
-              </div>
+                </CardContent>
+              </Card>
             );
           })}
       </div>
