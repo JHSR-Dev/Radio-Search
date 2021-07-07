@@ -50,9 +50,9 @@ export default function Radio() {
     'rock',
   ];
 
-  const setDefaultSrc = (event) => {
-    event.target.src = defaultImage;
-  };
+  // const setDefaultSrc = (event) => {
+  //   event.target.src = defaultImage;
+  // };
 
   return (
     <div className='radio'>
@@ -74,18 +74,22 @@ export default function Radio() {
           stations.map((station, index) => {
             return (
               <Card className='station' key={index}>
-                <CardHeader className='stationName' title={station.name}/>
-                <CardMedia className ='logo' image = {station.favicon ? station.favicon : defaultImage} title='station logo'/>
-                <CardContent>
-                 <AudioPlayer
-                  className='player'
-                  src={station.urlResolved}
-                  showJumpControls={false}
-                  layout='stacked'
-                  customProgressBarSection={[]}
-                  customControlsSection={['MAIN_CONTROLS', 'VOLUME_CONTROLS']}
-                  autoPlayAfterSrcChange={false}
+                <CardHeader className='stationName' title={station.name} />
+                <CardMedia
+                  className='logo'
+                  image={station.favicon ? station.favicon : defaultImage}
+                  title='station logo'
                 />
+                <CardContent>
+                  <AudioPlayer
+                    className='player'
+                    src={station.urlResolved}
+                    showJumpControls={false}
+                    layout='stacked'
+                    customProgressBarSection={[]}
+                    customControlsSection={['MAIN_CONTROLS', 'VOLUME_CONTROLS']}
+                    autoPlayAfterSrcChange={false}
+                  />
                 </CardContent>
               </Card>
             );
